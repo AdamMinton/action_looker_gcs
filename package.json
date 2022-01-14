@@ -1,0 +1,25 @@
+{
+  "name": "action-looker-gcs",
+  "version": "0.0.0",
+  "description": "A Looker Cloud Storage upload based on GCF",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdamMinton/action_export"
+  },
+  "author": "Adam Minton",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@google-cloud/storage": "^5.17.0",
+    "@types/request": "^2.48.8",
+    "@types/request-promise-native": "^1.0.18",
+    "request": "https://github.com/request/request/archive/392db7d127536ff296fb06492db9430790a32d6c.tar.gz",
+    "request-promise-native": "^1.0.5"
+  },
+  "resolutions": {
+    "**/request": "https://github.com/request/request/archive/392db7d127536ff296fb06492db9430790a32d6c.tar.gz"
+  }
+}
