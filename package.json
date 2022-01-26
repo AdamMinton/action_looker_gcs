@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "A Looker Cloud Storage upload based on GCF",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +22,10 @@
   },
   "resolutions": {
     "**/request": "https://github.com/request/request/archive/392db7d127536ff296fb06492db9430790a32d6c.tar.gz"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "pettier": "^1.1.0",
+    "prettier-eslint": "^13.0.0"
   }
 }

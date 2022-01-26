@@ -104,10 +104,9 @@ async function hubListing(req) {
 
 async function action0Form(req, res) {
   // https://github.com/looker/actions/blob/master/docs/action_api.md#action-form-endpoint
-  project_id = req.body.data.project_id;
-  private_key = req.body.data.private_key.replace(/\\n/g, "\n");
-  client_email = req.body.data.client_email;
-
+  const project_id = req.body.data.project_id;
+  const private_key = req.body.data.private_key.replace(/\\n/g, "\n");
+  const client_email = req.body.data.client_email;
   const gcs = gcsClientFromRequest(project_id, private_key, client_email);
   let results;
 
@@ -152,14 +151,16 @@ async function action0Form(req, res) {
 }
 
 async function action0Execute(req) {
-  project_id = req.body.data.project_id;
-  private_key = req.body.data.private_key.replace(/\\n/g, "\n");
-  client_email = req.body.data.client_email;
-  bucket = req.body.form_params.bucket;
-  overwrite = req.body.form_params.overwrite;
-  filename = req.body.form_params.filename;
-  url = req.body.scheduled_plan.download_url;
-  timeout = 13 * 60 * 1000;
+  const project_id = req.body.data.project_id;
+  const private_key = req.body.data.private_key.replace(/\\n/g, "\n");
+  const client_email = req.body.data.client_email;
+  const bucket = req.body.form_params.bucket;
+  const overwrite = req.body.form_params.overwrite;
+  let filename = req.body.form_params.filename;
+  const url = req.body.scheduled_plan.download_url;
+  const gcs = gcsClientFromRequest(project_id, private_key, client_email);
+  const file = gcs.bucket(bucket).file(filename);
+  const writeStream = file.createWriteStream();
 
   if (!bucket) {
     throw "Need Google Cloud Storage bucket.";
@@ -179,9 +180,6 @@ async function action0Execute(req) {
     throw new Error("Couldn't determine filename.");
   }
 
-  const gcs = gcsClientFromRequest(project_id, private_key, client_email);
-  const file = gcs.bucket(bucket).file(filename);
-  const writeStream = file.createWriteStream();
   try {
     results = await stream(url, writeStream);
     return { success: true };
@@ -257,8 +255,8 @@ function timingSafeEqual(a, b) {
   if (typeof b !== "string") {
     throw "String required";
   }
-  var aLen = Buffer.byteLength(a);
-  var bLen = Buffer.byteLength(b);
+  let aLen = Buffer.byteLength(a);
+  let bLen = Buffer.byteLength(b);
   const bufA = Buffer.allocUnsafe(aLen);
   bufA.write(a);
   const bufB = Buffer.allocUnsafe(aLen); //Yes, aLen
@@ -289,8 +287,6 @@ function gcsClientFromRequest(project_id, private_key, client_email) {
   }
 }
 async function stream(url, writeStream) {
-  //const stream = new PassThrough();
-  //const returnPromise = callback(stream);
   const timeout = 13 * 60 * 1000;
 
   const streamPromise = new Promise((resolve, reject) => {
